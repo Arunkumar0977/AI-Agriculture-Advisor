@@ -1,58 +1,55 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import axios from "axios";
 
-export async function POST(req: NextRequest) {
+const API_KEY = "579b464db66ec23bdd000001c44d9b7ac26a44b96fde3372e7b2e7e9";
+
+export async function POST(req: Request) {
   try {
     const { crop, location } = await req.json();
 
-    // ✅ Ensure environment variable exists
-    const apiKey = process.env.DATA_GOV_API_KEY;
-    if (!apiKey) {
-      throw new Error("Missing DATA_GOV_API_KEY in environment variables");
+    if (!crop || !location) {
+      return NextResponse.json({ error: "Crop and location required" }, { status: 400 });
     }
 
-    // ✅ Construct URL safely
-    const url = `https://api.data.gov.in/resource/579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b?format=json&api-key=${apiKey}&filters[commodity]=${encodeURIComponent(
-      crop
-    )}&filters[state]=${encodeURIComponent(location)}`;
+    const apiUrl = `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070
+      ?api-key=${API_KEY}
+      &format=json
+      &filters[commodity]=${encodeURIComponent(crop)}
+      &filters[state]=${encodeURIComponent(location)}
+    `.replace(/\s+/g, "");
 
-    console.log("🌾 Fetching Market Data:", url);
+    const response = await axios.get(apiUrl, {
+      validateStatus: () => true, 
+    });
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("⚠️ API Fetch Error:", errorText);
-      throw new Error(`Data.gov.in API failed: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    // ✅ Validate response
-    if (!data.records || data.records.length === 0) {
-      console.warn("⚠️ No records found for:", crop, location);
+    if (response.status !== 200) {
       return NextResponse.json({
-        crop,
-        location,
         price: "N/A",
-        date: "N/A",
-        unit: "₹/quintal",
-        message: "No market data found for this crop and location.",
+        message: "No market data found for this crop and location",
       });
     }
 
-    const latest = data.records[0];
+    const data = response.data;
+
+    if (!data.records || data.records.length === 0) {
+      return NextResponse.json({
+        price: "N/A",
+        message: "No data available",
+      });
+    }
+
+    const record = data.records[0];
 
     return NextResponse.json({
-      crop,
-      location,
-      price: latest.modal_price || latest.min_price || "N/A",
-      date: latest.arrival_date || "N/A",
-      unit: "₹/quintal",
+      price: record.modal_price ?? "N/A",
+      date: record.arrival_date ?? "Unknown",
+      unit: record.variety || "per quintal",
+      trend: [],
     });
-  } catch (error: any) {
-    console.error("🌾 Server Error:", error.message);
+  } catch (err) {
+    console.error("Market API error:", err);
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Failed to fetch market data" },
       { status: 500 }
     );
   }

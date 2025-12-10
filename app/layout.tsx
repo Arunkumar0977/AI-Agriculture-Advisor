@@ -3,6 +3,9 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+import AgriProvider from "./_components/AgriProvider";
+import React from "react";
+import { AdvisoryDetailProvider as AgriDetailProvider } from "@/context/AdvisoryDetailContext";
 
 
 
@@ -22,7 +25,11 @@ export default function RootLayout({
     <ClerkProvider>
     
       <html lang="en">
-        <body>{children}</body>
+        <body>
+           <AgriDetailProvider>
+          {children}
+        </AgriDetailProvider>
+          </body>
       </html>
     
     </ClerkProvider>

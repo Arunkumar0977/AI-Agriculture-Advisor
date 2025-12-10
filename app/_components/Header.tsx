@@ -11,7 +11,6 @@ const menuOptions = [
   { name: "Home", path: "/" },
   { name: "Pricing", path: "/pricing" },
   { name: "Contact Us", path: "/contact" },
-  { name: "Capture", path: "/capture" },
 ];
 
 const Header = () => {
@@ -33,7 +32,7 @@ const Header = () => {
             <h2
               className={`text-lg transition hover:scale-105 ${
                 path === menu.path
-                  ? "text-green-600 font-semibold" // active page highlighted
+                  ? "text-green-600 font-semibold" 
                   : "text-gray-700 dark:text-gray-200"
               }`}
             >
@@ -44,20 +43,26 @@ const Header = () => {
       </nav>
 
       {/* Auth Buttons */}
-      <div>
-        {user ? (
-          <UserButton afterSignOutUrl="/" />
-        ) : (
-          <SignInButton mode="modal">
-            <Button className="bg-green-600 hover:bg-green-700 text-white">Get Started</Button>
-          </SignInButton>
-        )}
-
-        <Link href='/create-agri-advisor' className='ml-4'>
-      <Button className="cursor-pointer ">Agri Advisor</Button>
-
+     <div>
+  {user ? (
+    <>
+      {/* Show Agri Advisor only after sign in */}
+      <Link href="/create-agri-advisor" className="ml-8">
+        <Button className="cursor-pointer">Agri Advisor</Button>
       </Link>
-      </div>
+      <UserButton/>
+    </>
+  ) : (
+    <>
+      <SignInButton mode="modal">
+        <Button className="bg-green-600 hover:bg-green-700 text-white">Get Started</Button>
+      </SignInButton>
+      
+    </>
+    
+  )}
+</div>
+
       
     </header>
   );
