@@ -1,38 +1,3 @@
-// import { defineSchema, defineTable } from "convex/server";
-// import { v } from "convex/values";
-
-// export default defineSchema({
-//   // 👤 Users table
-//   UserTable: defineTable({
-//     name: v.string(),
-//     imageUrl: v.string(),
-//     email: v.string(),
-//     subscription: v.optional(v.string()),
-//   }),
-
-//   // 🌾 AgriAdvisor table
-//   AgriAdvisorTable: defineTable({
-//     uid: v.string(),
-//     crop: v.string(),
-//     growth_stage: v.string(), // ✅ matches normalized key
-//     problem: v.string(),
-//     location: v.string(),
-
-//     // ✅ store advice grouped logically
-//     recommendations: v.object({
-//       irrigation: v.string(),
-//       fertilizer: v.string(),
-//       pesticide: v.string(),
-//       additionalAdvice: v.string(),
-//     }),
-
-//     // ✅ timestamps for tracking
-//     createdAt: v.optional(v.string()),
-//   }),
-// });
-
-
-
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 

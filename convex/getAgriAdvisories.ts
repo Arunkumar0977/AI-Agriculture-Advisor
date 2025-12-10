@@ -1,14 +1,3 @@
-// import { query } from "./_generated/server";
-
-// export const getAgriAdvisories = query({
-//   handler: async (ctx) => {
-//     const advisories = await ctx.db.query("AgriAdvisorTable").collect();
-//     return advisories;
-//   },
-// });
-// export default getAgriAdvisories;
-
-
 import { query } from "./_generated/server";
 
 export const getAgriAdvisories = query({
