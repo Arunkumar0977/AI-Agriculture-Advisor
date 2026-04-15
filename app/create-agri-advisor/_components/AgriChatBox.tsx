@@ -700,7 +700,7 @@ const handleWeatherQuery = useCallback(async (query: string) => {
         setLoading(false);
       }
     },
-    [userInput, messages, isFinal, selectedLanguage, user, t]
+    [userInput, messages, isFinal, selectedLanguage, user, t, handleWeatherQuery]
   );
 
   const handleChipClick = (value: string) => {

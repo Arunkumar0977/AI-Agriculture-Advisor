@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface FooterLink {
@@ -202,12 +203,12 @@ const SocialButton: React.FC<{ href: string; label: string; children: React.Reac
 
 const FooterLinkItem: React.FC<{ link: FooterLink }> = ({ link }) => (
   <li>
-    <a href={link.href} className="footer-link">
+    <Link href={link.href} className="footer-link">
       <span className="arrow-icon" aria-hidden="true">
         <ArrowIcon />
       </span>
       {link.label}
-    </a>
+    </Link>
   </li>
 );
 
@@ -540,7 +541,7 @@ const AgriFooter: React.FC = () => {
 
           {/* Brand */}
           <div>
-            <a href="/" className="brand-logo" aria-label="AI Agri Advisor home">
+           <Link href="/" className="brand-logo">
               <div className="logo-icon">
                 <LeafIcon />
               </div>
@@ -548,7 +549,7 @@ const AgriFooter: React.FC = () => {
                 <p className="brand-name">My Agri App</p>
                 <p className="brand-tagline">Smart Farming, Smarter Future</p>
               </div>
-            </a>
+            </Link>
             <p className="brand-desc">
               Empowering farmers with AI-driven insights for crop planning,
               disease detection, weather forecasting, and sustainable agriculture.
@@ -647,7 +648,7 @@ const AgriFooter: React.FC = () => {
           <ul className="legal-links" aria-label="Legal links">
             {legalLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href}>{link.label}</a>
+                <Link href={link.href}>{link.label}</Link>
               </li>
             ))}
           </ul>
