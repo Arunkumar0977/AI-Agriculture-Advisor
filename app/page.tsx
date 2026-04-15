@@ -1,7 +1,7 @@
 import Header from "./_components/Header";
 import Hero from "./_components/Hero";
 import { PopularAgriList } from "./_components/PopularAgriList";
-import Pricing from "./pricing/page";
+import Agrifooter from "./_components/Agrifooter";
 
 
 export default function Home() {
@@ -10,6 +10,7 @@ export default function Home() {
     <Header/>
     <Hero/>
     <PopularAgriList/>
+    <Agrifooter/>
     </div>
   );
 }

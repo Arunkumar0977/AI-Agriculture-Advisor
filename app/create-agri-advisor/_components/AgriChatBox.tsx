@@ -587,30 +587,43 @@ const AgriChatBox = () => {
   }, [messages]);
 
   // ── Weather ───────────────────────────────────────────────────────────────
-  const handleWeatherQuery = async (query: string) => {
-    try {
-      const location =
-        query.match(/weather in ([A-Za-z\s]+)/i)?.[1]?.trim() ||
-        query.match(/in ([A-Za-z\s]+)/i)?.[1]?.trim() ||
-        "Delhi";
 
-      const res = await axios.post("/api/weather", { location, language: selectedLanguage });
-      const weather: WeatherInfo = res.data;
+const handleWeatherQuery = useCallback(async (query: string) => {
+  try {
+    const location =
+      query.match(/weather in ([A-Za-z\s]+)/i)?.[1]?.trim() ||
+      query.match(/in ([A-Za-z\s]+)/i)?.[1]?.trim() ||
+      "Delhi";
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: `🌤️ ${t.weatherIntro} ${weather.location}:`,
-          weatherData: weather,
-        },
-      ]);
-    } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: t.weatherFetchError }]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const res = await axios.post("/api/weather", {
+      location,
+      language: selectedLanguage,
+    });
+
+    const weather: WeatherInfo = res.data;
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content: `🌤️ ${t.weatherIntro} ${weather.location}:`,
+        weatherData: weather,
+      },
+    ]);
+  } catch (error) {
+    console.error("Weather fetch error:", error);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content: t.weatherFetchError,
+      },
+    ]);
+  } finally {
+    setLoading(false);
+  }
+}, [selectedLanguage, t]);
 
   // ── Main send ─────────────────────────────────────────────────────────────
   const onSend = useCallback(
@@ -768,7 +781,7 @@ const AgriChatBox = () => {
           </div>
         );
       case "final":
-        return <FinalUi viewAdvice={() => console.log("View Full Advisory")} disable={!advisoryDetail} />;
+        return <FinalUi disable={!advisoryDetail} />;
       default:
         return null;
     }

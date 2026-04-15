@@ -54,4 +54,11 @@ export default defineSchema({
 
     createdAt: v.optional(v.string()),
   }),
+
+  crops: defineTable({
+    name: v.string(),
+    season: v.string(),
+    createdAt: v.number(),
+  }),
+
 });

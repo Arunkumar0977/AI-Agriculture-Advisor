@@ -9,6 +9,7 @@ Analyze this plant leaf image and detect disease.
 
 Image URL: ${body.image}
 
+
 Give output strictly in this format:
 
 English:
@@ -34,7 +35,7 @@ Hindi:
       },
       body: JSON.stringify({
         model: "openai/gpt-3.5-turbo",
-        max_tokens: 800,
+        max_tokens: 300,
         messages: [
           {
             role: "user",

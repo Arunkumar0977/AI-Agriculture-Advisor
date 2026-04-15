@@ -3,7 +3,7 @@
 import React from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {ArrowDown,Leaf, Sun, Sprout, Send, BarChart3, Bug,} from "lucide-react";
+import {ArrowDown,Leaf,  Sprout, Send, BarChart3, Bug,} from "lucide-react";
 import HeroVideoDialog from "@/components/magicui/hero-video-dialog";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";

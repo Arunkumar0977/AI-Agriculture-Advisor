@@ -25,12 +25,13 @@ const cropRules: CropRule[] = [
     crop: "Rice 🌾",
     conditions: (i) =>
       (i.rainfall > 150 ? 1 : 0) +
-      (i.moisture ? 1 : 0) +
+      (i.temperature > 25 ? 1 : 0) +
       (i.ph >= 5.5 && i.ph <= 7 ? 1 : 0),
   },
   {
     crop: "Maize 🌽",
     conditions: (i) =>
+    (i.rainfall > 50 && i.rainfall < 150 ? 1 : 0) +
       (i.temperature > 20 ? 1 : 0) +
       (i.ph >= 5.5 && i.ph <= 7.5 ? 1 : 0),
   },

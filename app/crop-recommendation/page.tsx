@@ -306,7 +306,6 @@ export default function CropRecommendationPage() {
   const [loading, setLoading]         = useState(false);
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError]     = useState<string | null>(null);
-  const [isListening, setIsListening] = useState(false);
 
   const s = STRINGS[currentLang];
 
@@ -340,34 +339,6 @@ export default function CropRecommendationPage() {
     } finally {
       setWeatherLoading(false);
     }
-  };
-
-  // ── Voice input ──────────────────────────────────────────────────────────
-  const startVoiceInput = () => {
-    const SpeechRecognition =
-      (window as Window & { SpeechRecognition?: typeof window.SpeechRecognition;
-                            webkitSpeechRecognition?: typeof window.SpeechRecognition })
-        .SpeechRecognition ??
-      (window as Window & { webkitSpeechRecognition?: typeof window.SpeechRecognition })
-        .webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      alert("Voice input is not supported in this browser.");
-      return;
-    }
-
-    const langObj      = LANGS.find((l) => l.code === currentLang);
-    const recognition  = new SpeechRecognition();
-    recognition.lang   = langObj?.locale ?? "hi-IN";
-    recognition.start();
-    setIsListening(true);
-
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      setSoil(event.results[0][0].transcript);
-      setIsListening(false);
-    };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend   = () => setIsListening(false);
   };
 
   // ── AI submit ────────────────────────────────────────────────────────────
@@ -480,26 +451,13 @@ export default function CropRecommendationPage() {
               {/* Soil */}
               <div>
                 <label className="block text-sm text-green-200 mb-1 font-medium">{s.soil}</label>
-                <div className="flex gap-2">
-                  <input
-                    placeholder={s.soilPH}
-                    value={soil}
-                    onChange={(e) => setSoil(e.target.value)}
-                    className="flex-1 rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all"
-                    style={{ background: "rgba(255,255,255,0.08)" }}
-                  />
-                  <button
-                    type="button"
-                    onClick={startVoiceInput}
-                    title={`Speak in ${s.langLabel}`}
-                    className="px-4 py-3 rounded-xl border border-white/10 text-lg transition-all hover:border-blue-400"
-                    style={{
-                      background: isListening ? "rgba(59,130,246,0.3)" : "rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    {isListening ? "🔴" : "🎤"}
-                  </button>
-                </div>
+                <input
+                  placeholder={s.soilPH}
+                  value={soil}
+                  onChange={(e) => setSoil(e.target.value)}
+                  className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all"
+                  style={{ background: "rgba(255,255,255,0.08)" }}
+                />
               </div>
 
               {/* Season */}

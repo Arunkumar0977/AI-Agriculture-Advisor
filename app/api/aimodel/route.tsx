@@ -106,11 +106,7 @@ const openai = new OpenAI({
 
 // ─── System prompts ───────────────────────────────────────────────────────────
 
-/**
- * Builds the conversational (step-by-step) system prompt.
- * Language is injected dynamically so the AI always responds in the
- * farmer's chosen language.
- */
+
 function buildConversationPrompt(language: string): string {
   return `You are **AgriGPT**, an advanced AI Agriculture Advisor that interacts conversationally with farmers to improve crop productivity, pest management, irrigation, and fertilizer efficiency.
 
@@ -153,12 +149,6 @@ Follow these rules carefully:
 10. Expert note: Combine crop knowledge, growth stage data, and environmental context for realistic, sustainable advice.`;
 }
 
-/**
- * Builds the final advisory system prompt.
- * The advisory JSON fields should always be in English (structured data)
- * but the text values (irrigation_schedule, weather_advice, yield_tips, etc.)
- * should be in the farmer's language.
- */
 function buildFinalPrompt(language: string): string {
   return `You are an expert AI Agriculture Advisor.
 

@@ -111,9 +111,14 @@ export default function DiseaseDetectionPage() {
     setLang("english");
   };
 
-  const isHealthy =
-    result?.english?.toLowerCase?.().includes("healthy") ||
-    result?.english?.toLowerCase?.().includes("no disease");
+ const englishText =
+  typeof result?.english === "string"
+    ? result.english.toLowerCase()
+    : result?.english?.diseaseName?.toLowerCase() || "";
+
+const isHealthy =
+  englishText.includes("healthy") ||
+  englishText.includes("no disease");
 
   return (
     <div>
