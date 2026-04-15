@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Header from "../_components/Header";
- 
+
 type WeatherData = {
   temperature: number;
   rainfall: number;
@@ -48,7 +48,6 @@ type LangStrings = {
   wind: string;
   langLabel: string;
 };
-
 
 const LANGS: { code: LangCode; name: string; locale: string }[] = [
   { code: "en", name: "🇬🇧 English",   locale: "en-IN" },
@@ -368,297 +367,298 @@ export default function CropRecommendationPage() {
   // ─── Render ──────────────────────────────────────────────────────────────
   return (
     <div>
-    <div className=" sticky top-0 z-10">
-      <Header/>
-    </div>
-    <div
-      className="min-h-screen relative overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
-        fontFamily: "'Georgia', serif",
-      }}
-    >
-      {/* Background dots */}
+      <div className="sticky top-0 z-50">
+        <Header />
+      </div>
       <div
-        className="absolute inset-0 opacity-10"
+        className="min-h-screen relative overflow-hidden"
         style={{
-          backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
+          background: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+          fontFamily: "'Georgia', serif",
         }}
-      />
+      >
+        {/* Background dots */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
 
-      {/* Ambient blobs */}
-      <div className="absolute top-20 left-10 w-64 h-64 rounded-full opacity-10 blur-3xl"
-        style={{ background: "radial-gradient(circle, #56ab2f, transparent)" }} />
-      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-10 blur-3xl"
-        style={{ background: "radial-gradient(circle, #f7971e, transparent)" }} />
+        {/* Ambient blobs */}
+        <div className="absolute top-20 left-10 w-48 h-48 sm:w-64 sm:h-64 rounded-full opacity-10 blur-3xl"
+          style={{ background: "radial-gradient(circle, #56ab2f, transparent)" }} />
+        <div className="absolute bottom-20 right-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full opacity-10 blur-3xl"
+          style={{ background: "radial-gradient(circle, #f7971e, transparent)" }} />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-12">
+        <div className="relative z-10 max-w-5xl mx-auto px-4 py-8 sm:py-12">
 
-        {/* ── Header ── */}
-        <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
-          <div className="text-center md:text-left">
-            <h1
-              className="text-4xl md:text-5xl font-bold text-white tracking-tight"
-              style={{ textShadow: "0 0 40px rgba(86,171,47,0.5)" }}
-            >
-              {s.title}
-            </h1>
-            <p className="text-green-300 text-lg opacity-80 mt-1">{s.sub}</p>
+          {/* ── Header ── */}
+          <div className="flex flex-col md:flex-row items-center justify-between mb-8 sm:mb-10 gap-4">
+            <div className="text-center md:text-left w-full md:w-auto">
+              <h1
+                className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight"
+                style={{ textShadow: "0 0 40px rgba(86,171,47,0.5)" }}
+              >
+                {s.title}
+              </h1>
+              <p className="text-green-300 text-sm sm:text-lg opacity-80 mt-2 md:mt-1">{s.sub}</p>
+            </div>
+
+            {/* ── Language Dropdown ── */}
+            <div className="relative w-full sm:w-auto">
+              <select
+                value={currentLang}
+                onChange={handleLangChange}
+                className="w-full sm:w-auto appearance-none pl-4 pr-10 py-3 rounded-xl text-base font-medium outline-none cursor-pointer transition-all"
+                style={{
+                  background:  "rgba(86,171,47,0.15)",
+                  border:      "1px solid rgba(86,171,47,0.45)",
+                  color:       "#a8e063",
+                  minWidth:    "170px",
+                }}
+              >
+                {LANGS.map((l) => (
+                  <option key={l.code} value={l.code}
+                    style={{ background: "#1a3a2a", color: "white" }}>
+                    {l.name}
+                  </option>
+                ))}
+              </select>
+              {/* Chevron icon */}
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-green-400 text-sm">
+                ▾
+              </span>
+            </div>
           </div>
 
-          {/* ── Language Dropdown ── */}
-          <div className="relative">
-            <select
-              value={currentLang}
-              onChange={handleLangChange}
-              className="appearance-none pl-4 pr-10 py-3 rounded-xl text-base font-medium outline-none cursor-pointer transition-all"
-              style={{
-                background:  "rgba(86,171,47,0.15)",
-                border:      "1px solid rgba(86,171,47,0.45)",
-                color:       "#a8e063",
-                minWidth:    "170px",
-              }}
+          {/* ── Two-column grid ── */}
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
+
+            {/* ── FORM CARD ── */}
+            <div
+              className="rounded-3xl p-5 sm:p-8 border border-white/10 shadow-2xl"
+              style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}
             >
-              {LANGS.map((l) => (
-                <option key={l.code} value={l.code}
-                  style={{ background: "#1a3a2a", color: "white" }}>
-                  {l.name}
-                </option>
-              ))}
-            </select>
-            {/* Chevron icon */}
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-green-400 text-sm">
-              ▾
-            </span>
-          </div>
-        </div>
+              <h2 className="text-lg sm:text-xl font-semibold text-green-300 mb-5 sm:mb-6 flex items-center gap-2">
+                {s.form}
+              </h2>
 
-        {/* ── Two-column grid ── */}
-        <div className="grid md:grid-cols-2 gap-8 items-start">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
 
-          {/* ── FORM CARD ── */}
-          <div
-            className="rounded-3xl p-8 border border-white/10 shadow-2xl"
-            style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}
-          >
-            <h2 className="text-xl font-semibold text-green-300 mb-6 flex items-center gap-2">
-              {s.form}
-            </h2>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-
-              {/* Soil */}
-              <div>
-                <label className="block text-sm text-green-200 mb-1 font-medium">{s.soil}</label>
-                <input
-                  placeholder={s.soilPH}
-                  value={soil}
-                  onChange={(e) => setSoil(e.target.value)}
-                  className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all"
-                  style={{ background: "rgba(255,255,255,0.08)" }}
-                />
-              </div>
-
-              {/* Season */}
-              <div>
-                <label className="block text-sm text-green-200 mb-2 font-medium">{s.season}</label>
-                <div className="flex gap-2">
-                  {SEASONS.map((ss) => (
-                    <button
-                      key={ss.value}
-                      type="button"
-                      onClick={() => setSeason(ss.value)}
-                      className="flex-1 py-2 rounded-xl text-sm font-medium border transition-all"
-                      style={{
-                        background:   season === ss.value ? `${ss.color}33` : "rgba(255,255,255,0.06)",
-                        borderColor:  season === ss.value ? ss.color : "rgba(255,255,255,0.1)",
-                        color:        season === ss.value ? ss.color : "rgba(255,255,255,0.6)",
-                      }}
-                    >
-                      {ss.icon} {s[ss.value]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Location */}
-              <div>
-                <label className="block text-sm text-green-200 mb-1 font-medium">{s.location}</label>
-                <div className="flex gap-2">
+                {/* Soil */}
+                <div>
+                  <label className="block text-sm text-green-200 mb-1 font-medium">{s.soil}</label>
                   <input
-                    placeholder={s.locPH}
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="flex-1 rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all"
+                    placeholder={s.soilPH}
+                    value={soil}
+                    onChange={(e) => setSoil(e.target.value)}
+                    className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all text-sm sm:text-base"
                     style={{ background: "rgba(255,255,255,0.08)" }}
                   />
-                  <button
-                    type="button"
-                    onClick={fetchWeather}
-                    disabled={weatherLoading}
-                    className="px-4 py-3 rounded-xl font-medium text-sm border border-yellow-400/40 text-yellow-300 transition-all hover:bg-yellow-400/10 disabled:opacity-50 whitespace-nowrap"
-                    style={{ background: "rgba(251,191,36,0.08)" }}
-                  >
-                    {weatherLoading ? "⏳" : `🌦 ${s.fetch}`}
-                  </button>
                 </div>
-                {weatherError && (
-                  <p className="text-red-400 text-xs mt-1">⚠️ {weatherError}</p>
-                )}
-              </div>
 
-              {/* Weather strip */}
-              {weatherData && (
-                <div
-                  className="rounded-2xl p-4 border border-blue-400/20 text-sm"
-                  style={{ background: "rgba(79,172,254,0.08)" }}
-                >
-                  <p className="text-blue-300 font-semibold mb-2">
-                    🌍 {weatherData.location} — {weatherData.weather}
-                  </p>
-                  <div className="grid grid-cols-3 gap-2 text-center text-white/70">
-                    <div>
-                      <p className="text-lg font-bold text-white">{weatherData.temperature}°C</p>
-                      <p className="text-xs">{s.temp.replace("🌡️ ", "").replace(" (°C)", "")}</p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-white">{weatherData.humidity}%</p>
-                      <p className="text-xs">{s.humidity}</p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-white">{weatherData.wind_speed} m/s</p>
-                      <p className="text-xs">{s.wind}</p>
+                {/* Season */}
+                <div>
+                  <label className="block text-sm text-green-200 mb-2 font-medium">{s.season}</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {SEASONS.map((ss) => (
+                      <button
+                        key={ss.value}
+                        type="button"
+                        onClick={() => setSeason(ss.value)}
+                        className="w-full py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-medium border transition-all flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2"
+                        style={{
+                          background:   season === ss.value ? `${ss.color}33` : "rgba(255,255,255,0.06)",
+                          borderColor:  season === ss.value ? ss.color : "rgba(255,255,255,0.1)",
+                          color:        season === ss.value ? ss.color : "rgba(255,255,255,0.6)",
+                        }}
+                      >
+                        <span className="text-base sm:text-sm">{ss.icon}</span>
+                        <span>{s[ss.value]}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Location */}
+                <div>
+                  <label className="block text-sm text-green-200 mb-1 font-medium">{s.location}</label>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      placeholder={s.locPH}
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      className="w-full sm:flex-1 rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all text-sm sm:text-base"
+                      style={{ background: "rgba(255,255,255,0.08)" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={fetchWeather}
+                      disabled={weatherLoading}
+                      className="w-full sm:w-auto px-4 py-3 rounded-xl font-medium text-sm border border-yellow-400/40 text-yellow-300 transition-all hover:bg-yellow-400/10 disabled:opacity-50 whitespace-nowrap"
+                      style={{ background: "rgba(251,191,36,0.08)" }}
+                    >
+                      {weatherLoading ? "⏳" : `🌦 ${s.fetch}`}
+                    </button>
+                  </div>
+                  {weatherError && (
+                    <p className="text-red-400 text-xs mt-1">⚠️ {weatherError}</p>
+                  )}
+                </div>
+
+                {/* Weather strip */}
+                {weatherData && (
+                  <div
+                    className="rounded-2xl p-3 sm:p-4 border border-blue-400/20 text-sm"
+                    style={{ background: "rgba(79,172,254,0.08)" }}
+                  >
+                    <p className="text-blue-300 font-semibold mb-2 text-center sm:text-left">
+                      🌍 {weatherData.location} — {weatherData.weather}
+                    </p>
+                    <div className="grid grid-cols-3 gap-1 sm:gap-2 text-center text-white/70">
+                      <div>
+                        <p className="text-base sm:text-lg font-bold text-white">{weatherData.temperature}°C</p>
+                        <p className="text-[10px] sm:text-xs">{s.temp.replace("🌡️ ", "").replace(" (°C)", "")}</p>
+                      </div>
+                      <div>
+                        <p className="text-base sm:text-lg font-bold text-white">{weatherData.humidity}%</p>
+                        <p className="text-[10px] sm:text-xs">{s.humidity}</p>
+                      </div>
+                      <div>
+                        <p className="text-base sm:text-lg font-bold text-white">{weatherData.wind_speed} m/s</p>
+                        <p className="text-[10px] sm:text-xs">{s.wind}</p>
+                      </div>
                     </div>
                   </div>
+                )}
+
+                {/* Temp & Rainfall */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm text-green-200 mb-1 font-medium">{s.temp}</label>
+                    <input
+                      placeholder={s.tempPH}
+                      value={temperature}
+                      onChange={(e) => setTemperature(e.target.value)}
+                      className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all text-sm sm:text-base"
+                      style={{ background: "rgba(255,255,255,0.08)" }}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm text-green-200 mb-1 font-medium">{s.rain}</label>
+                    <input
+                      placeholder={s.rainPH}
+                      value={rainfall}
+                      onChange={(e) => setRainfall(e.target.value)}
+                      className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all text-sm sm:text-base"
+                      style={{ background: "rgba(255,255,255,0.08)" }}
+                    />
+                  </div>
+                </div>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 sm:py-4 rounded-2xl font-bold text-base sm:text-lg text-white transition-all disabled:opacity-60"
+                  style={{
+                    background:  loading
+                      ? "rgba(86,171,47,0.4)"
+                      : "linear-gradient(135deg, #56ab2f, #a8e063)",
+                    boxShadow: loading ? "none" : "0 0 30px rgba(86,171,47,0.4)",
+                  }}
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                      {s.analysing}
+                    </span>
+                  ) : (
+                    s.submit
+                  )}
+                </button>
+              </form>
+            </div>
+
+            {/* ── RESULT CARD ── */}
+            <div
+              className="rounded-3xl p-5 sm:p-8 border border-white/10 shadow-2xl min-h-64 flex flex-col"
+              style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}
+            >
+              <h2 className="text-lg sm:text-xl font-semibold text-green-300 mb-5 sm:mb-6 flex items-center gap-2">
+                {s.result}
+              </h2>
+
+              {/* Empty state */}
+              {!result && !loading && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center text-white/30 gap-4 py-8">
+                  <span className="text-5xl sm:text-6xl">🌿</span>
+                  <p className="text-xs sm:text-sm whitespace-pre-line px-2">{s.empty}</p>
                 </div>
               )}
 
-              {/* Temp & Rainfall */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm text-green-200 mb-1 font-medium">{s.temp}</label>
-                  <input
-                    placeholder={s.tempPH}
-                    value={temperature}
-                    onChange={(e) => setTemperature(e.target.value)}
-                    className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all"
-                    style={{ background: "rgba(255,255,255,0.08)" }}
-                  />
+              {/* Loading */}
+              {loading && (
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 py-8">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 border-4 border-green-400/30 border-t-green-400 rounded-full animate-spin" />
+                  <p className="text-green-300 text-sm animate-pulse">{s.analysing}</p>
                 </div>
-                <div>
-                  <label className="block text-sm text-green-200 mb-1 font-medium">{s.rain}</label>
-                  <input
-                    placeholder={s.rainPH}
-                    value={rainfall}
-                    onChange={(e) => setRainfall(e.target.value)}
-                    className="w-full rounded-xl px-4 py-3 text-white placeholder-white/30 border border-white/10 outline-none focus:border-green-400 transition-all"
-                    style={{ background: "rgba(255,255,255,0.08)" }}
-                  />
-                </div>
-              </div>
+              )}
 
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-4 rounded-2xl font-bold text-lg text-white transition-all disabled:opacity-60"
-                style={{
-                  background:  loading
-                    ? "rgba(86,171,47,0.4)"
-                    : "linear-gradient(135deg, #56ab2f, #a8e063)",
-                  boxShadow: loading ? "none" : "0 0 30px rgba(86,171,47,0.4)",
-                }}
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                    {s.analysing}
-                  </span>
-                ) : (
-                  s.submit
-                )}
-              </button>
-            </form>
-          </div>
+              {/* Results */}
+              {result && !loading && (
+                <div className="space-y-4 sm:space-y-5 flex-1">
 
-          {/* ── RESULT CARD ── */}
-          <div
-            className="rounded-3xl p-8 border border-white/10 shadow-2xl min-h-64 flex flex-col"
-            style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}
-          >
-            <h2 className="text-xl font-semibold text-green-300 mb-6 flex items-center gap-2">
-              {s.result}
-            </h2>
-
-            {/* Empty state */}
-            {!result && !loading && (
-              <div className="flex-1 flex flex-col items-center justify-center text-center text-white/30 gap-4">
-                <span className="text-6xl">🌿</span>
-                <p className="text-sm whitespace-pre-line">{s.empty}</p>
-              </div>
-            )}
-
-            {/* Loading */}
-            {loading && (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4">
-                <div className="w-12 h-12 border-4 border-green-400/30 border-t-green-400 rounded-full animate-spin" />
-                <p className="text-green-300 text-sm animate-pulse">{s.analysing}</p>
-              </div>
-            )}
-
-            {/* Results */}
-            {result && !loading && (
-              <div className="space-y-5 flex-1">
-
-                {/* English block — always shown */}
-                <div
-                  className="rounded-2xl p-5 border border-green-400/20"
-                  style={{ background: "rgba(86,171,47,0.1)" }}
-                >
-                  <p className="text-xs text-green-400 font-semibold uppercase tracking-widest mb-2">
-                    English
-                  </p>
-                  <p className="text-white text-lg leading-relaxed font-medium">
-                    {result.english}
-                  </p>
-                </div>
-
-                {/* Regional block — shown when language is not English */}
-                {currentLang !== "en" && result.regional && (
+                  {/* English block — always shown */}
                   <div
-                    className="rounded-2xl p-5 border border-orange-400/20"
-                    style={{ background: "rgba(251,146,60,0.08)" }}
+                    className="rounded-2xl p-4 sm:p-5 border border-green-400/20"
+                    style={{ background: "rgba(86,171,47,0.1)" }}
                   >
-                    <p className="text-xs text-orange-400 font-semibold uppercase tracking-widest mb-2">
-                      {s.langLabel}
+                    <p className="text-[10px] sm:text-xs text-green-400 font-semibold uppercase tracking-widest mb-2">
+                      English
                     </p>
-                    <p
-                      className="text-white text-lg leading-relaxed"
-                      style={{ fontFamily: "'Noto Sans', 'Noto Sans Devanagari', serif" }}
-                    >
-                      {result.regional}
+                    <p className="text-white text-base sm:text-lg leading-relaxed font-medium">
+                      {result.english}
                     </p>
                   </div>
-                )}
 
-                {/* Clear */}
-                <button
-                  onClick={() => setResult(null)}
-                  className="w-full py-2 rounded-xl text-sm text-white/40 border border-white/10 hover:border-white/20 hover:text-white/60 transition-all"
-                >
-                  {s.clear}
-                </button>
-              </div>
-            )}
+                  {/* Regional block — shown when language is not English */}
+                  {currentLang !== "en" && result.regional && (
+                    <div
+                      className="rounded-2xl p-4 sm:p-5 border border-orange-400/20"
+                      style={{ background: "rgba(251,146,60,0.08)" }}
+                    >
+                      <p className="text-[10px] sm:text-xs text-orange-400 font-semibold uppercase tracking-widest mb-2">
+                        {s.langLabel}
+                      </p>
+                      <p
+                        className="text-white text-base sm:text-lg leading-relaxed"
+                        style={{ fontFamily: "'Noto Sans', 'Noto Sans Devanagari', serif" }}
+                      >
+                        {result.regional}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Clear */}
+                  <button
+                    onClick={() => setResult(null)}
+                    className="w-full py-2 rounded-xl text-sm text-white/40 border border-white/10 hover:border-white/20 hover:text-white/60 transition-all mt-2"
+                  >
+                    {s.clear}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        <p className="text-center text-white/20 text-xs mt-10">
-          Powered by OpenWeather · AI Agriculture Advisory
-        </p>
+          <p className="text-center text-white/20 text-[10px] sm:text-xs mt-8 sm:mt-10">
+            Powered by OpenWeather · AI Agriculture Advisory
+          </p>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

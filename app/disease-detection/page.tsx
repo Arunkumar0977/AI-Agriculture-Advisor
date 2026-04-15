@@ -122,7 +122,7 @@ const isHealthy =
 
   return (
     <div>
-    <div><Header/></div>
+    <div className="sticky top-0 z-50"><Header/></div>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Tiro+Devanagari+Hindi&display=swap');
