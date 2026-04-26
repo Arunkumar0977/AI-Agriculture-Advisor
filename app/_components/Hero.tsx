@@ -41,7 +41,8 @@ const Hero = () => {
   const router = useRouter();
   
   const checkAuthAndRedirect = (route: string) => {
-  if (!user) {
+  if (!user) 
+    {
     router.push('Auth/sign-in');
     return;
   }

@@ -7,7 +7,12 @@ import axios from "axios";
 import FinalUi from "./FinalUi";
 import { useUser } from "@clerk/nextjs";
 
-
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Message = {
@@ -550,7 +555,7 @@ const AgriChatBox = () => {
   const [advisoryDetail, setAdvisoryDetail] = useState<AdvisoryInfo | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [currentStep, setCurrentStep] = useState(1);
-
+  const [listening, setListening] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const finalTriggered = useRef(false);
   const { user } = useUser();
@@ -585,6 +590,55 @@ const AgriChatBox = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
+
+  const handleVoiceInput = () => {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Speech Recognition not supported in this browser");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+
+  // 🌍 Dynamic language support
+  const langMap = {
+    English: "en-IN",
+    "हिंदी": "hi-IN",
+    "தமிழ்": "ta-IN",
+    "తెలుగు": "te-IN",
+    "বাংলা": "bn-IN",
+    "मराठी": "mr-IN",
+    "ಕನ್ನಡ": "kn-IN",
+    "മലയാളം": "ml-IN",
+  };
+
+  recognition.lang = langMap[selectedLanguage] || "en-IN";
+  recognition.interimResults = false;
+
+  recognition.start();
+  setListening(true);
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+
+    setUserInput(transcript);   // 👈 fill input
+    setListening(false);
+
+    // 🚀 auto send to AI
+    onSend(transcript);
+  };
+
+  recognition.onerror = (err) => {
+    console.error("Voice error:", err);
+    setListening(false);
+  };
+
+  recognition.onend = () => {
+    setListening(false);
+  };
+};
 
   // ── Weather ───────────────────────────────────────────────────────────────
 
@@ -930,9 +984,16 @@ const handleWeatherQuery = useCallback(async (query: string) => {
 
         {/* Text input row */}
         <div className="flex gap-2 items-end">
-          <button className="w-10 h-10 rounded-full border border-gray-200 bg-gray-50 flex items-center justify-center text-gray-500 hover:border-green-400 hover:bg-green-50 transition-colors flex-shrink-0">
-            <Mic className="w-4 h-4" />
-          </button>
+          <button
+  onClick={handleVoiceInput}
+  className={`w-10 h-10 rounded-full border flex items-center justify-center flex-shrink-0 transition-all
+    ${listening 
+      ? "bg-red-500 text-white animate-pulse border-red-600" 
+      : "bg-gray-50 text-gray-500 border-gray-200 hover:border-green-400 hover:bg-green-50"}
+  `}
+>
+  <Mic className="w-4 h-4" />
+</button>
           <div className="flex-1">
             <Textarea
               value={userInput}
